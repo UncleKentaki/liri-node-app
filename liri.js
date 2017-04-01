@@ -11,6 +11,32 @@ var keys = require("./keys.js");
 
 var argInput = process.argv.slice(3).join(' ');
 
+function doWhatItSays() {
+    // This block of code will read from the "movies.txt" file.
+    // It's important to include the "utf8" parameter or the code will provide stream data (garbage)
+    // The code will store the contents of the reading inside the variable "data"
+    fs.readFile("random.txt", "utf8", function (error, data) {
+
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+
+        var dammit = dataArr[1];
+
+        dammitWTF = dammit.toString().replace(/["]+/g, '');
+        
+        process.argv[2] = dataArr[0];
+        process.argv[3] = dammitWTF;
+
+        console.log(argInput);
+        
+
+        spotifyThis();
+
+
+
+    });
+}
+
 //function for requesting from omDB
 function movieThis() {
 
@@ -81,10 +107,10 @@ function spotifyThis() {
 
 function myTweets() {
     var client = new Twitter({
-        consumer_key: process.env.TWITTER_CONSUMER_KEY,
-        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-        access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+        consumer_key: keys.twitterKeys.consumer_key,
+        consumer_secret: keys.twitterKeys.consumer_secret,
+        access_token_key: keys.twitterKeys.access_token_secret,
+        access_token_secret: keys.twitterKeys.access_token_secret
     });
 
     var params = { screen_name: "ForensicSmiles" };
@@ -99,29 +125,7 @@ function myTweets() {
 
 }
 
-function doWhatItSays() {
-    // This block of code will read from the "movies.txt" file.
-    // It's important to include the "utf8" parameter or the code will provide stream data (garbage)
-    // The code will store the contents of the reading inside the variable "data"
-    fs.readFile("random.txt", "utf8", function (error, data) {
 
-        // Then split it by commas (to make it more readable)
-        var dataArr = data.split(",");
-
-        var dammit = dataArr[1];
-
-        dammitWTF = dammit.replace(/["]+/g, '');
-        
-        process.argv[2] = dataArr[0];
-        argInput = dammitWTF;
-        
-
-        switchCase();
-
-
-
-    });
-}
 
 function switchCase() {
 
