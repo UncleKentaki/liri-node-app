@@ -7,9 +7,7 @@ var request = require("request");
 
 var spotify = require("spotify");
 
-var keys = require("./keys.js")
-
-var argInput = null;
+var keys = require("./keys.js");
 
 var argInput = process.argv.slice(3).join(' ');
 
@@ -83,17 +81,17 @@ function spotifyThis() {
 
 function myTweets() {
     var client = new Twitter({
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-});
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
+        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+        access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+        access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+    });
 
     var params = { screen_name: "ForensicSmiles" };
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             console.log(tweets);
-            
+
         } else {
             console.log(error);
         }
@@ -102,25 +100,51 @@ function myTweets() {
 }
 
 function doWhatItSays() {
-    
+    // This block of code will read from the "movies.txt" file.
+    // It's important to include the "utf8" parameter or the code will provide stream data (garbage)
+    // The code will store the contents of the reading inside the variable "data"
+    fs.readFile("random.txt", "utf8", function (error, data) {
+
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+
+        var dammit = dataArr[1];
+
+        dammitWTF = dammit.replace(/["]+/g, '');
+        
+        process.argv[2] = dataArr[0];
+        argInput = dammitWTF;
+        
+
+        switchCase();
+
+
+
+    });
 }
 
-switch (process.argv[2]) {
-    case "movie-this":
-        movieThis();
-        break;
-    case "spotify-this-song":
-        spotifyThis();
-        break;
-    case "my-tweets":
-        myTweets();
-        break;
-    case "do-what-it-says":
-        doWhatItSays();
-        break;
-    default:
-        console.log("\n-----------------\n");
-        console.log("! PLEASE ENTER A VALID COMMAND !");
-        console.log("\n-----------------\n");
+function switchCase() {
+
+    switch (process.argv[2]) {
+        case "movie-this":
+            movieThis();
+            break;
+        case "spotify-this-song":
+            spotifyThis();
+            break;
+        case "my-tweets":
+            myTweets();
+            break;
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+        default:
+            console.log("\n-----------------\n");
+            console.log("! PLEASE ENTER A VALID COMMAND !");
+            console.log("\n-----------------\n");
+
+    }
 
 }
+
+switchCase();
